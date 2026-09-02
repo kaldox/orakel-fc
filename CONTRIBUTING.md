@@ -46,7 +46,7 @@ German, matching the existing history – short, imperative, one line:
 ```
 Mehrere Turniere/Ligen parallel unterstützen
 Open-Redirect beim Login schliessen
-README: Wertungsregeln praezisiert
+README: Wertungsregeln präzisiert
 ```
 
 ## Security-relevant code
@@ -64,13 +64,13 @@ By contributing, you agree your contribution is licensed under the project's
 
 ## Beitragen zu ORAKEL FC
 
-Danke fuers Interesse! ORAKEL FC ist ein Hobby-Projekt, gepflegt in der Freizeit
-– etwas Geduld bei Reviews ist hilfreich, aber Beitraege sind ausdruecklich
+Danke fürs Interesse! ORAKEL FC ist ein Hobby-Projekt, gepflegt in der Freizeit
+– etwas Geduld bei Reviews ist hilfreich, aber Beiträge sind ausdrücklich
 willkommen.
 
 ## Bevor du startest
 
-Fuer alles ueber einen kleinen Fix hinaus: bitte erst ein Issue aufmachen und den
+Für alles über einen kleinen Fix hinaus: bitte erst ein Issue aufmachen und den
 Ansatz besprechen. Bei Bugs hilft eine minimale Reproduktion sehr.
 
 ## Entwicklungsumgebung einrichten
@@ -84,17 +84,17 @@ python3 -m pytest tests/
 ```
 
 Die Testsuite setzt ihre eigenen `SECRET_KEY`/`ADMIN_PASSWORD`-Defaults, nutzt
-pro Test eine In-Memory-SQLite-DB und ruehrt nie an einer echten `orakel.db`.
+pro Test eine In-Memory-SQLite-DB und rührt nie an einer echten `orakel.db`.
 
 ## Ablauf
 
 - **Ein Feature/Fix = ein Branch = ein PR.** Von `main` abzweigen, z.B.
   `feat/knockout-bonus` oder `fix/open-redirect-login`.
 - **Tests sind nicht optional.** Neue Features brauchen Tests, Bugfixes einen
-  Regressionstest, der ohne den Fix fehlschlaegt. Vor jedem PR
+  Regressionstest, der ohne den Fix fehlschlägt. Vor jedem PR
   `python3 -m pytest tests/` – muss sauber durchlaufen.
 - **Beide Sprachen synchron halten.** ORAKEL FC hat ein EN/DE-UI;
-  nutzersichtbare Strings laufen ueber `i18n`. README-Aenderungen in
+  nutzersichtbare Strings laufen über `i18n`. README-Änderungen in
   `README.md` **und** `README.en.md`.
 - **CHANGELOG aktualisieren.** Neues Feature oder Fix → eine Zeile unter
   `[Unreleased]` in `CHANGELOG.md`.
@@ -106,16 +106,16 @@ pro Test eine In-Memory-SQLite-DB und ruehrt nie an einer echten `orakel.db`.
 Deutsch, wie in der bestehenden Historie – kurz, im Imperativ, einzeilig:
 
 ```
-Mehrere Turniere/Ligen parallel unterstuetzen
+Mehrere Turniere/Ligen parallel unterstützen
 Open-Redirect beim Login schliessen
-README: Wertungsregeln praezisiert
+README: Wertungsregeln präzisiert
 ```
 
 ## Sicherheitsrelevanter Code
 
-Aenderungen an `auth.py`, `security.py` oder am Session-/Cookie-Setup sollten die
-bestehende Haertung erhalten: CSRF-Schutz, Login-Bruteforce-Bremse,
-Sicherheitsheader und gehaertete Session-Cookies.
+Änderungen an `auth.py`, `security.py` oder am Session-/Cookie-Setup sollten die
+bestehende Härtung erhalten: CSRF-Schutz, Login-Bruteforce-Bremse,
+Sicherheitsheader und gehärtete Session-Cookies.
 
 ## Lizenz
 
