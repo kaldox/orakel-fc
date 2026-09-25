@@ -11,7 +11,7 @@
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
 ![Self-hosted](https://img.shields.io/badge/self--hosted-%E2%9C%93-success)
 ![UI](https://img.shields.io/badge/UI-EN%20%2F%20DE-informational)
-[![Version](https://img.shields.io/badge/version-1.3.1-informational)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.3.2-informational)](CHANGELOG.md)
 
 **🇩🇪 Deutsch** · [🇬🇧 English](README.en.md)
 

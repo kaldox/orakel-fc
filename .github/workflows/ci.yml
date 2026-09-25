@@ -27,3 +27,14 @@ jobs:
         run: python -m compileall -q .
       - name: Tests
         run: python -m pytest tests/ -q
+      - name: Start-Test mit gunicorn (wie im Container)
+        env:
+          SECRET_KEY: nur-fuer-den-ci-test
+          DATA_DIR: /tmp/orakel-ci
+        run: |
+          mkdir -p "$DATA_DIR"
+          gunicorn -w 1 --threads 4 -b 127.0.0.1:8090 app:app --daemon --pid /tmp/gunicorn.pid
+          for i in $(seq 1 40); do curl -fs -o /dev/null http://127.0.0.1:8090/login && break; sleep 0.5; done
+          curl -fs http://127.0.0.1:8090/login | grep -qi password
+          echo "gunicorn $(gunicorn --version | cut -d' ' -f3 | tr -d ')'): /login antwortet"
+          kill "$(cat /tmp/gunicorn.pid)"

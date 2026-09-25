@@ -9,6 +9,7 @@ zugeordnet; das Datum ist jeweils das des letzten Commits der Version.
 
 | Version | Datum | Das Wichtigste |
 |---|---|---|
+| [1.3.2](#132--2026-09-26) | 2026-09-26 | gunicorn-Sicherheitsupdate, Start-Test in der CI |
 | [1.3.1](#131--2026-09-02) | 2026-09-02 | Sicherheitsrichtlinie, Beitragsleitfaden, CI mit allen Tests |
 | [1.3.0](#130--2026-08-16) | 2026-08-16 | Tipp-Vorschlag mit Begründung, Name ohne „2026" |
 | [1.2.0](#120--2026-08-15) | 2026-08-15 | Mehrere Turniere parallel, Spielplan-Import für WM/EM/Europapokal, Info-Panel beim Tippen |
@@ -17,6 +18,19 @@ zugeordnet; das Datum ist jeweils das des letzten Commits der Version.
 | [1.0.0](#100--2026-06-07) | 2026-06-07 | Erste Version |
 
 ## [Unreleased]
+
+## [1.3.2] – 2026-09-26
+
+### Sicherheit
+- gunicorn 22.0.0 → 26.2.0. 22.0.0 ist anfällig für Request Smuggling (CVE-2024-6827,
+  behoben ab 23.0.0); 26.x härtet die HTTP-Verarbeitung weiter (Request-Target nach
+  RFC 9112, Steuerzeichen in Headern, verbotene Trailer). Die strengeren Regeln lehnen nur
+  fehlerhafte oder mehrdeutige Anfragen ab. Entfernt wurde seit 22 der Eventlet-Worker;
+  ORAKEL FC nutzt gthread (`-w 1 --threads 4`) und ist davon nicht betroffen.
+
+### Hinzugefügt
+- CI: Start-Test mit echtem gunicorn wie im Container. Die App muss starten und die
+  Login-Seite ausliefern (vorher prüften die Tests nur die Flask-App direkt).
 
 ## [1.3.1] – 2026-09-02
 
@@ -93,7 +107,8 @@ zugeordnet; das Datum ist jeweils das des letzten Commits der Version.
 - Docker-Setup, Admin-Bereich, Import des WM-2026-Spielplans.
 - Handy-Optimierung, PWA, zweisprachige Dokumentation.
 
-[Unreleased]: https://github.com/kaldox/orakel-fc/compare/v1.3.1...HEAD
+[Unreleased]: https://github.com/kaldox/orakel-fc/compare/v1.3.2...HEAD
+[1.3.2]: https://github.com/kaldox/orakel-fc/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/kaldox/orakel-fc/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/kaldox/orakel-fc/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/kaldox/orakel-fc/compare/v1.1.1...v1.2.0
