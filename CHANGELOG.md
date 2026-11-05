@@ -20,6 +20,11 @@ zugeordnet; das Datum ist jeweils das des letzten Commits der Version.
 
 ## [Unreleased]
 
+### Geändert
+- CI: `actions/checkout` v4 → v7 und `actions/setup-python` v5 → v7. Beide laufen auf
+  Node.js 24; GitHub hatte vor dem auslaufenden Node.js 20 gewarnt. Betrifft nur die CI,
+  nicht die App.
+
 ## [1.3.3] – 2026-11-05
 
 ### Sicherheit
