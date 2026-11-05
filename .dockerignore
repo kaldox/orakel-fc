@@ -9,4 +9,8 @@ venv/
 .gitignore
 *.md
 .dockerignore
-test_scoring.py
+tests/
+docs/
+.github/
+.claude/
+.pytest_cache/

@@ -9,6 +9,7 @@ zugeordnet; das Datum ist jeweils das des letzten Commits der Version.
 
 | Version | Datum | Das Wichtigste |
 |---|---|---|
+| [1.3.3](#133--2026-11-05) | 2026-11-05 | Container ohne root, Flask-WTF 1.3.0, Docker-Test in der CI, Doku aufgeräumt |
 | [1.3.2](#132--2026-09-26) | 2026-09-26 | gunicorn-Sicherheitsupdate, Start-Test in der CI |
 | [1.3.1](#131--2026-09-02) | 2026-09-02 | Sicherheitsrichtlinie, Beitragsleitfaden, CI mit allen Tests |
 | [1.3.0](#130--2026-08-16) | 2026-08-16 | Tipp-Vorschlag mit Begründung, Name ohne „2026" |
@@ -18,6 +19,35 @@ zugeordnet; das Datum ist jeweils das des letzten Commits der Version.
 | [1.0.0](#100--2026-06-07) | 2026-06-07 | Erste Version |
 
 ## [Unreleased]
+
+## [1.3.3] – 2026-11-05
+
+### Sicherheit
+- Der Container läuft nicht mehr als root, sondern als eigener Benutzer `orakel`
+  (UID 10001). Ein kleines Startskript übergibt `data/` an diesen Benutzer und gibt dann
+  die root-Rechte ab. Bestehende Installationen, deren `data/` noch root gehört, laufen
+  daher ohne Handgriff weiter. Der Programmcode im Container ist für die App nicht
+  beschreibbar.
+- gunicorn startet ohne Control Socket (`--no-control-socket`). Die Fernsteuerung
+  `gunicornc` (seit gunicorn 25.1) wird nicht gebraucht; als Nicht-root-Benutzer hätte
+  sie bei jedem Start einen Fehler ins Log geschrieben.
+
+### Hinzugefügt
+- CI: eigener Docker-Job. Baut das Image, startet es mit einem `data/`-Ordner, der root
+  gehört (wie bei alten Installationen), und prüft: Login-Seite antwortet, gunicorn läuft
+  als `orakel`, die Daten gehören `orakel`, kein Fehler im Log.
+- `.gitattributes`: Shell-Skripte und Dockerfile bleiben auch bei Checkout auf Windows
+  bei LF-Zeilenenden.
+
+### Geändert
+- Flask-WTF 1.2.1 → 1.3.0.
+- `datetime.utcnow()` (seit Python 3.12 veraltet) durch eine gleichwertige Hilfsfunktion
+  ersetzt. Gespeicherte Zeiten bleiben unverändert (UTC ohne Zeitzone), die
+  124 Deprecation-Warnungen in den Tests sind weg.
+- `.dockerignore` schließt Tests, Screenshots und CI-Dateien aus dem Image aus.
+- Doku: Screenshots in der README eingeblendet, Testanzahl korrigiert (79), `BETRIEB.md`
+  ohne „2026"/„WM", Update per `git pull` statt Zip, Hinweis auf die vorhandene
+  „Passwort ändern"-Seite statt „kommt später".
 
 ## [1.3.2] – 2026-09-26
 
@@ -107,7 +137,8 @@ zugeordnet; das Datum ist jeweils das des letzten Commits der Version.
 - Docker-Setup, Admin-Bereich, Import des WM-2026-Spielplans.
 - Handy-Optimierung, PWA, zweisprachige Dokumentation.
 
-[Unreleased]: https://github.com/kaldox/orakel-fc/compare/v1.3.2...HEAD
+[Unreleased]: https://github.com/kaldox/orakel-fc/compare/v1.3.3...HEAD
+[1.3.3]: https://github.com/kaldox/orakel-fc/compare/v1.3.2...v1.3.3
 [1.3.2]: https://github.com/kaldox/orakel-fc/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/kaldox/orakel-fc/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/kaldox/orakel-fc/compare/v1.2.0...v1.3.0

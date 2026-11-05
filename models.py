@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-Datenbankmodelle fuer ORAKEL FC 2026.
+Datenbankmodelle fuer ORAKEL FC.
 
 Alle SQLAlchemy-Modelle an einer Stelle, getrennt von Routen und Logik.
 """
-from datetime import datetime
+from datetime import datetime, timezone
 
 from extensions import db
+
+
+def utcnow():
+    """Aktuelle UTC-Zeit ohne Zeitzonen-Info (so wie bisher in der DB gespeichert).
+
+    Ersetzt das veraltete datetime.utcnow(), Werte bleiben identisch.
+    """
+    return datetime.now(timezone.utc).replace(tzinfo=None)
 
 
 class Player(db.Model):
@@ -15,7 +23,7 @@ class Player(db.Model):
     pw_hash = db.Column(db.String(255), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
     plays = db.Column(db.Boolean, default=True)  # veraltet, ungenutzt seit Membership.plays (Abwaertskompatibilitaet)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=utcnow)
 
 
 class Competition(db.Model):
@@ -32,7 +40,7 @@ class Competition(db.Model):
     simple_mode = db.Column(db.Boolean, default=False)
     active = db.Column(db.Boolean, default=True)
     sort_order = db.Column(db.Integer, default=0)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=utcnow)
 
 
 class Membership(db.Model):
@@ -97,7 +105,7 @@ class JokerPlay(db.Model):
     matchday = db.Column(db.String(20))
     target_player_id = db.Column(db.Integer, db.ForeignKey("player.id"))
     note = db.Column(db.String(200), default="")
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=utcnow)
 
 
 class Mission(db.Model):
@@ -155,7 +163,7 @@ class Adjustment(db.Model):
     matchday = db.Column(db.String(20))
     points = db.Column(db.Integer, default=0)
     reason = db.Column(db.String(200), default="")
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=utcnow)
 
 
 class Setting(db.Model):

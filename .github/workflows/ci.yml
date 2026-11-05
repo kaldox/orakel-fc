@@ -33,8 +33,44 @@ jobs:
           DATA_DIR: /tmp/orakel-ci
         run: |
           mkdir -p "$DATA_DIR"
-          gunicorn -w 1 --threads 4 -b 127.0.0.1:8090 app:app --daemon --pid /tmp/gunicorn.pid
+          gunicorn -w 1 --threads 4 --no-control-socket -b 127.0.0.1:8090 app:app --daemon --pid /tmp/gunicorn.pid
           for i in $(seq 1 40); do curl -fs -o /dev/null http://127.0.0.1:8090/login && break; sleep 0.5; done
           curl -fs http://127.0.0.1:8090/login | grep -qi password
           echo "gunicorn $(gunicorn --version | cut -d' ' -f3 | tr -d ')'): /login antwortet"
           kill "$(cat /tmp/gunicorn.pid)"
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Image bauen
+        run: docker build -t orakel-fc:ci .
+      - name: Start wie bei einer alten Installation (data/ gehört root)
+        run: |
+          mkdir -p /tmp/orakel-data && sudo touch /tmp/orakel-data/altdatei && sudo chown -R root:root /tmp/orakel-data
+          docker run -d --name orakel-ci -e SECRET_KEY=nur-fuer-den-ci-test -e COOKIE_SECURE=0 \
+            -v /tmp/orakel-data:/app/data orakel-fc:ci
+          for i in $(seq 1 40); do docker exec orakel-ci python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8090/login')" 2>/dev/null && break; sleep 0.5; done
+          docker exec orakel-ci python -c "import urllib.request; assert b'assword' in urllib.request.urlopen('http://127.0.0.1:8090/login').read()"
+      - name: Läuft nicht als root, Daten gehören dem App-Benutzer, Log ohne Fehler
+        run: |
+          # Prozesse, deren Programm gunicorn ist (argv[1] = .../gunicorn), mit Besitzer
+          users=$(docker exec orakel-ci python -c "
+          import os, pwd
+          owners = set()
+          for pid in filter(str.isdigit, os.listdir('/proc')):
+              try:
+                  args = open(f'/proc/{pid}/cmdline', 'rb').read().split(b'\0')
+                  if len(args) > 1 and args[1].endswith(b'/gunicorn'):
+                      owners.add(pwd.getpwuid(os.stat(f'/proc/{pid}').st_uid).pw_name)
+              except OSError:
+                  pass
+          print(','.join(sorted(owners)))")
+          echo "gunicorn läuft als: $users"
+          test "$users" = "orakel"
+          docker exec orakel-ci sh -c 'test "$(stat -c %U /app/data/orakel.db)" = orakel && test "$(stat -c %U /app/data/altdatei)" = orakel'
+          docker logs orakel-ci 2>&1 | tee /tmp/orakel.log
+          ! grep -q "\[ERROR\]" /tmp/orakel.log
+      - name: Aufräumen
+        if: always()
+        run: docker rm -f orakel-ci || true

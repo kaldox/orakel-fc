@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Punkteberechnung fuer ORAKEL FC 2026: Basis-Tippauswertung, Joker-Effekte,
+Punkteberechnung fuer ORAKEL FC: Basis-Tippauswertung, Joker-Effekte,
 Missionen/Challenges/Anpassungen und die finale Tabelle (Standings).
 
 Reine Berechnungslogik auf Basis der Models - kein Flask-Request-Kontext

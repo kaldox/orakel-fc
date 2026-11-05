@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Gemeinsame pytest-Fixtures fuer ORAKEL FC 2026.
+Gemeinsame pytest-Fixtures fuer ORAKEL FC.
 
 Jeder Test bekommt eine frische In-Memory-SQLite-DB und eine isolierte
 Flask-App-Instanz - Tests beeinflussen sich nicht gegenseitig und ruehren

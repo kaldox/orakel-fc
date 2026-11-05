@@ -11,7 +11,7 @@
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
 ![Self-hosted](https://img.shields.io/badge/self--hosted-%E2%9C%93-success)
 ![UI](https://img.shields.io/badge/UI-EN%20%2F%20DE-informational)
-[![Version](https://img.shields.io/badge/version-1.3.2-informational)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.3.3-informational)](CHANGELOG.md)
 
 [🇩🇪 Deutsch](README.md) · **🇬🇧 English**
 
@@ -37,13 +37,11 @@
 
 ## Screenshots
 
-<!-- Drop your PNGs into the docs/ folder, then uncomment this block:
-| Standings | Predict | Help |
+| Standings | Jokers | Help |
 |:---:|:---:|:---:|
-| ![Standings](docs/standings.png) | ![Predict](docs/predict.png) | ![Help](docs/help.png) |
--->
+| ![Standings](docs/table.png) | ![Jokers](docs/joker.png) | ![Help](docs/help.png) |
 
-_Add a few screenshots to `docs/` and uncomment the gallery above — see the [Wiki](../../wiki) for a styling guide._
+_The screenshots show the German UI; switch to English in the app at any time._
 
 ## Documentation
 
@@ -201,6 +199,7 @@ See `BETRIEB.md` for a ready-made backup script and a more detailed update flow.
 
 - Make sure to change **`SECRET_KEY`** and **`ADMIN_PASSWORD`** in `.env` — the app refuses to start without a `SECRET_KEY`.
 - The container binds to `127.0.0.1` — only reachable from outside via your reverse proxy + HTTPS.
+- Inside the container the app runs as its own user `orakel`, not as root. Existing `data/` folders are taken over automatically on start.
 - For a small group of friends (5–15 people), 1 worker + SQLite is plenty. Only consider Postgres if you expect heavy concurrent writes.
 
 ## Tests
@@ -209,7 +208,7 @@ See `BETRIEB.md` for a ready-made backup script and a more detailed update flow.
 python3 -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
 pip install pytest
-python3 -m pytest tests/      # 52 tests: scoring engine, login/brute-force/open-redirect, routes
+python3 -m pytest tests/      # 79 tests: scoring, login/brute-force/open-redirect, routes, competitions, import, stats
 ```
 
 ---

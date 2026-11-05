@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Authentifizierung und Zugriffsschutz fuer ORAKEL FC 2026.
+Authentifizierung und Zugriffsschutz fuer ORAKEL FC.
 
 Enthaelt:
 - current_player(): aktuell eingeloggter Spieler (oder None)

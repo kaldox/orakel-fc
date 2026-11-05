@@ -1,4 +1,4 @@
-# Betrieb & Produktion – ORAKEL FC 2026
+# Betrieb & Produktion – ORAKEL FC
 
 Diese Anleitung beschreibt den **laufenden Betrieb** deiner Installation: HTTPS,
 Reverse Proxy, Zertifikate, Sicherheit, Backups und Updates. Sie ist auf dein
@@ -156,19 +156,14 @@ docker restart Nginx_Proxy_Manager
 
 ## 6. Updates einspielen
 
-Wenn du eine neue Version (`orakel-fc.zip`) bekommst:
+Neue Versionen stehen im [Changelog](CHANGELOG.md). Einspielen per Git:
 
 ```bash
-# 1. Zip auf den Pi kopieren (vom PC):
-#    scp "$env:USERPROFILE\Downloads\orakel-fc.zip" docker@192.168.1.50:~/
-
-# 2. Auf dem Pi entpacken (überschreibt nur Programmdateien; data/ und .env bleiben):
-cd ~
-unzip -o orakel-fc.zip -d ~/
-sudo chown -R docker:docker ~/orakel-fc        # nur nötig, falls mit sudo entpackt
-
-# 3. Im Projektordner neu bauen + ggf. Migration + NPM auffrischen:
+# 1. Neuen Stand holen (data/ und .env sind nicht im Repo und bleiben unberührt):
 cd ~/orakel-fc
+git pull
+
+# 2. Neu bauen + ggf. Migration + NPM auffrischen:
 docker compose up -d --build
 # Falls ein Migrationsskript mitgeliefert wird (z.B. fix_umlauts.py), einmal:
 # docker compose exec orakel-fc python fix_umlauts.py
@@ -185,10 +180,10 @@ docker compose ps                                   # orakel-fc "healthy"
 curl -sI https://orakel.example.com/login | head -1 # HTTP/1.1 200 OK
 ```
 
-> `data/` (die Datenbank) und `.env` liegen nicht im Zip und werden beim Update
+> `data/` (die Datenbank) und `.env` liegen nicht im Repo und werden beim Update
 > nie überschrieben. Trotzdem vor größeren Updates ein Backup ziehen (Abschnitt 5).
 
-> **Mehrere Turniere (ab dieser Version):** Der Umstieg auf das neue
+> **Mehrere Turniere (ab 1.2.0):** Der Umstieg auf das neue
 > Competition-Modell läuft beim ersten Start nach dem Update automatisch mit
 > (fehlende Spalten werden ergänzt, ein Default-Turnier aus dem bisherigen
 > `LEAGUE_NAME` angelegt, alle bestehenden Daten dorthin überführt). Kein
@@ -222,9 +217,9 @@ Login läuft über **Name + Passwort**, das du als Spielleitung vergibst
 (Admin → Spieler). Eine Einladung kann so aussehen:
 
 ```
-🎉 Willkommen zum ORAKEL FC – unserem WM-Tippspiel!
+🎉 Willkommen zum ORAKEL FC – unserem Tippspiel zur {TURNIER}!
 
-Tippe die Spiele der WM 2026 und sammle Punkte gegen den Rest der Truppe.
+Tippe die Spiele und sammle Punkte gegen den Rest der Truppe.
 
 📱 Läuft direkt im Browser – nichts installieren
 ⚽ Tipp in wenigen Sekunden abgegeben
@@ -239,10 +234,10 @@ Dein Zugang:
 Tipp: Beim ersten Öffnen erscheint eine kurze Einführung. Viel Erfolg! 🍀
 ```
 
-Ersetze `{NAME}` und `{PASSWORT}` pro Person. Aus Sicherheitsgründen lassen sich
-Passwörter nicht auslesen – wenn jemand seins vergisst, setzt du im Admin einfach
-ein neues, indem du die Person neu anlegst (oder wir ergänzen später eine
-„Passwort ändern"-Funktion für Spieler).
+Ersetze `{TURNIER}`, `{NAME}` und `{PASSWORT}` passend. Jede:r kann das Passwort
+danach selbst unter **Passwort** ändern (empfehlen!). Aus Sicherheitsgründen lassen
+sich Passwörter nicht auslesen – wenn jemand seins vergisst, setzt du unter
+**Admin → Spieler** ein neues.
 
 ---
 

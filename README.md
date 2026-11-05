@@ -11,7 +11,7 @@
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
 ![Self-hosted](https://img.shields.io/badge/self--hosted-%E2%9C%93-success)
 ![UI](https://img.shields.io/badge/UI-EN%20%2F%20DE-informational)
-[![Version](https://img.shields.io/badge/version-1.3.2-informational)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.3.3-informational)](CHANGELOG.md)
 
 **🇩🇪 Deutsch** · [🇬🇧 English](README.en.md)
 
@@ -37,13 +37,9 @@ Mit **Jokern, geheimen Missionen, Challenges, Sonderwertungen und Chaos-Events**
 
 ## Screenshots
 
-<!-- Lege deine PNGs in den docs/-Ordner und entferne dann die Kommentarzeichen:
-| Tabelle | Tippen | Hilfe |
+| Tabelle | Joker | Hilfe |
 |:---:|:---:|:---:|
-| ![Tabelle](docs/standings.png) | ![Tippen](docs/predict.png) | ![Hilfe](docs/help.png) |
--->
-
-_Lege ein paar Screenshots in `docs/` ab und entkommentiere die Galerie oben – siehe [Wiki](../../wiki)._
+| ![Tabelle](docs/table.png) | ![Joker](docs/joker.png) | ![Hilfe](docs/help.png) |
 
 ## Dokumentation
 
@@ -225,6 +221,7 @@ docker compose up -d --build
 
 - **`SECRET_KEY`** und **`ADMIN_PASSWORD`** in `.env` unbedingt ändern.
 - Der Container ist an `127.0.0.1` gebunden – von außen nur über nginx + HTTPS erreichbar.
+- Die App läuft im Container als eigener Benutzer `orakel`, nicht als root. Bestehende `data/`-Ordner übernimmt sie beim Start automatisch.
 - Für eine kleine Freundesrunde (5–15 Leute) ist 1 Worker + SQLite ideal. Erst bei sehr vielen gleichzeitigen Schreibzugriffen lohnt ein Umstieg auf Postgres.
 
 ---
@@ -235,7 +232,7 @@ docker compose up -d --build
 python3 -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
 pip install pytest
-python3 -m pytest tests/      # 52 Tests: Wertungs-Engine, Login/Bruteforce/Open-Redirect, Routen
+python3 -m pytest tests/      # 79 Tests: Wertung, Login/Bruteforce/Open-Redirect, Routen, Turniere, Import, Statistik
 ```
 
 ---

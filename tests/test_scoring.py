@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Tests fuer die Wertungs-Engine (scoring.py) von ORAKEL FC 2026.
+Tests fuer die Wertungs-Engine (scoring.py) von ORAKEL FC.
 
 Deckt Basis-Tippauswertung (Tendenz/Differenz/Exakt), KO- und
 Ueberraschungsbonus, Risiko-Verdopplung sowie den Verdoppler-Joker ab.

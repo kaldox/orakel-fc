@@ -9,7 +9,7 @@ from werkzeug.security import generate_password_hash
 from extensions import db
 from models import (Adjustment, Award, Challenge, ChaosEvent, Competition,
                      JokerPlay, JokerType, Match, Membership, Mission,
-                     MissionAssignment, Player, Tip)
+                     MissionAssignment, Player, Tip, utcnow)
 from auth import admin_required
 from competitions import FORMAT_PRESETS, current_competition, require_competition, unique_slug
 from i18n_helpers import t
@@ -372,6 +372,6 @@ def admin_chaos_toggle(cid):
     c = db.session.get(ChaosEvent, cid)
     if c and c.competition_id == comp.id:
         c.active = not c.active
-        c.activated_at = datetime.utcnow() if c.active else None
+        c.activated_at = utcnow() if c.active else None
         db.session.commit()
     return redirect(url_for("admin.admin_catalog", kind="chaos"))
